@@ -12,12 +12,15 @@ If you're new to Vonage, you can [sign up for a Vonage API account](https://dash
 The push notifications in the project require set up with your Apple developer account and your Vonage API account. See the accompanying [blog post](LINKCOMING) for more information.
 
 Clone the project to your computer, using the terminal:
+
 `git clone git@github.com:nexmo-community/swift-phone-to-app-callkit.git`
 
 Install the Client SDK with Cocoapods:
+
 `pod install`
 
 Open the project in xcode:
+
 `xed .`
 
 
