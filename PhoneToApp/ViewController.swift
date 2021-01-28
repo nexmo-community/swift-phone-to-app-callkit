@@ -87,6 +87,7 @@ class ViewController: UIViewController {
             
         }))
         alert.addAction(UIAlertAction(title: "Reject", style: .default, handler: { _ in
+            NotificationCenter.default.post(name: .handledCallApp, object: nil)
             call.reject(nil)
         }))
         

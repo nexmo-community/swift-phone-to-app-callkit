@@ -1,7 +1,7 @@
 import PushKit
 import NexmoClient
 
-typealias PushInfo = (token: PKPushPayload, completion: () -> Void)
+typealias PushInfo = (payload: PKPushPayload, completion: () -> Void)
 
 /*
  This class provides an interface to the Nexmo Client that can
@@ -48,7 +48,7 @@ final class ClientManager: NSObject {
      This in turn will call didReceive for the app to handle the incoming call.
      */
     private func processNexmoPushPayload(with pushInfo: PushInfo) {
-        guard let _ = NXMClient.shared.processNexmoPushPayload(pushInfo.token.dictionaryPayload) else {
+        guard let _ = NXMClient.shared.processNexmoPushPayload(pushInfo.payload.dictionaryPayload) else {
             print("Nexmo push processing error")
             return
         }
