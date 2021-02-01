@@ -2,7 +2,7 @@
 
 <img src="https://developer.nexmo.com/assets/images/Vonage_Nexmo.svg" height="48px" alt="Nexmo is now known as Vonage" />
 
-This is a Swift project that uses the [Client SDK](https://developer.nexmo.com/client-sdk/overview) to receive inbound calls from a phone with a [CallKit](https://developer.apple.com/documentation/callkit) integration for push notifications. Check out the accompanying [blog post](LINKCOMING) for more information.
+This is a Swift project that uses the [Client SDK](https://developer.nexmo.com/client-sdk/overview) to receive inbound calls from a phone with a [CallKit](https://developer.apple.com/documentation/callkit) integration for push notifications. Check out the accompanying [blog post](https://learn.vonage.com/blog/2021/01/28/handling-voip-push-notifications-with-callkit/) for more information.
 
 ## Welcome to Vonage
 
