@@ -9,7 +9,7 @@ This is a Swift project that uses the [Client SDK](https://developer.nexmo.com/c
 If you're new to Vonage, you can [sign up for a Vonage API account](https://dashboard.nexmo.com/sign-up?utm_source=DEV_REL&utm_medium=github&utm_campaign=) and get some free credit to get you started.
 
 ## Running the project
-The push notifications in the project require set up with your Apple developer account and your Vonage API account. See the accompanying [blog post](LINKCOMING) for more information.
+The push notifications in the project require set up with your Apple developer account and your Vonage API account. See the accompanying [blog post](https://learn.vonage.com/blog/2021/01/28/handling-voip-push-notifications-with-callkit/) for more information.
 
 Clone the project to your computer, using the terminal:
 
