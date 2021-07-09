@@ -76,7 +76,7 @@ class ViewController: UIViewController {
     
     func displayIncomingCallAlert(call: NXMCall) {
         var from = "Unknown"
-        if let otherParty = call.otherCallMembers.firstObject as? NXMCallMember {
+        if let otherParty = call.allMembers.first {
             from = otherParty.channel?.from.data ?? "Unknown"
         }
         let alert = UIAlertController(title: "Incoming call from", message: from, preferredStyle: .alert)

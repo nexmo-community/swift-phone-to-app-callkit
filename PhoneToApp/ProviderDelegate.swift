@@ -45,7 +45,7 @@ extension ProviderDelegate: NXMCallDelegate {
         hangup()
     }
     
-    func call(_ call: NXMCall, didUpdate callMember: NXMCallMember, with status: NXMCallMemberStatus) {
+    func call(_ call: NXMCall, didUpdate callMember: NXMMember, with status: NXMCallMemberStatus) {
         switch status {
         case .cancelled, .failed, .timeout, .rejected, .completed:
             hangup()
@@ -54,7 +54,7 @@ extension ProviderDelegate: NXMCallDelegate {
         }
     }
     
-    func call(_ call: NXMCall, didUpdate callMember: NXMCallMember, isMuted muted: Bool) {}
+    func call(_ call: NXMCall, didUpdate callMember: NXMMember, isMuted muted: Bool) {}
     
     /*
      When a call is ended,
