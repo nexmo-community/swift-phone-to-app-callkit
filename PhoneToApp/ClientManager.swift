@@ -65,6 +65,7 @@ final class ClientManager: NSObject {
             NXMClient.shared.enablePushNotifications(withPushKitToken: token, userNotificationToken: nil, isSandbox: true) { error in
                 if error != nil {
                     print("registration error: \(String(describing: error))")
+                    return
                 }
                 print("push token registered")
                 UserDefaults.standard.setValue(token, forKey: Constants.pushToken)
