@@ -16,7 +16,7 @@
 		12F8EE9C24B33A9C00EDB1CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12F8EE9A24B33A9C00EDB1CC /* Main.storyboard */; };
 		12F8EE9E24B33A9D00EDB1CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12F8EE9D24B33A9D00EDB1CC /* Assets.xcassets */; };
 		12F8EEA124B33A9D00EDB1CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12F8EE9F24B33A9D00EDB1CC /* LaunchScreen.storyboard */; };
-		3AD9F84905930FE83DA58AE1 /* Pods_PhoneToApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD62D376447EA7DA8E6E2E8B /* Pods_PhoneToApp.framework */; };
+		5B90737D1EDFAD28A5E40789 /* Pods_PhoneToApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3785E9A0E619555D49D7E9 /* Pods_PhoneToApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,9 +32,9 @@
 		12F8EE9D24B33A9D00EDB1CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		12F8EEA024B33A9D00EDB1CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		12F8EEA224B33A9D00EDB1CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7B001FD93F4173AECFE9B037 /* Pods-PhoneToApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhoneToApp.release.xcconfig"; path = "Target Support Files/Pods-PhoneToApp/Pods-PhoneToApp.release.xcconfig"; sourceTree = "<group>"; };
-		7D2475DAE0B519816E69CC72 /* Pods-PhoneToApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhoneToApp.debug.xcconfig"; path = "Target Support Files/Pods-PhoneToApp/Pods-PhoneToApp.debug.xcconfig"; sourceTree = "<group>"; };
-		CD62D376447EA7DA8E6E2E8B /* Pods_PhoneToApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhoneToApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		68B1825D61402C7E46C04222 /* Pods-PhoneToApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhoneToApp.debug.xcconfig"; path = "Target Support Files/Pods-PhoneToApp/Pods-PhoneToApp.debug.xcconfig"; sourceTree = "<group>"; };
+		770D1BEDB575DE510FE846D9 /* Pods-PhoneToApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhoneToApp.release.xcconfig"; path = "Target Support Files/Pods-PhoneToApp/Pods-PhoneToApp.release.xcconfig"; sourceTree = "<group>"; };
+		CC3785E9A0E619555D49D7E9 /* Pods_PhoneToApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhoneToApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,8 +42,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AD9F84905930FE83DA58AE1 /* Pods_PhoneToApp.framework in Frameworks */,
 				120C804B25A60A3D0093B04E /* CallKit.framework in Frameworks */,
+				5B90737D1EDFAD28A5E40789 /* Pods_PhoneToApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,16 +71,16 @@
 		12F8EE9324B33A9C00EDB1CC /* PhoneToApp */ = {
 			isa = PBXGroup;
 			children = (
-				120C804825A603A30093B04E /* PhoneToApp.entitlements */,
 				12F8EE9424B33A9C00EDB1CC /* AppDelegate.swift */,
-				12F8EE9624B33A9C00EDB1CC /* SceneDelegate.swift */,
-				12F8EE9824B33A9C00EDB1CC /* ViewController.swift */,
-				12F8EE9A24B33A9C00EDB1CC /* Main.storyboard */,
-				12F8EE9D24B33A9D00EDB1CC /* Assets.xcassets */,
-				12F8EE9F24B33A9D00EDB1CC /* LaunchScreen.storyboard */,
-				12F8EEA224B33A9D00EDB1CC /* Info.plist */,
-				12BC7D3A25AC95990076F492 /* ProviderDelegate.swift */,
 				12BC7D4625AF1DF70076F492 /* ClientManager.swift */,
+				12F8EE9824B33A9C00EDB1CC /* ViewController.swift */,
+				12BC7D3A25AC95990076F492 /* ProviderDelegate.swift */,
+				12F8EE9624B33A9C00EDB1CC /* SceneDelegate.swift */,
+				12F8EE9A24B33A9C00EDB1CC /* Main.storyboard */,
+				12F8EE9F24B33A9D00EDB1CC /* LaunchScreen.storyboard */,
+				120C804825A603A30093B04E /* PhoneToApp.entitlements */,
+				12F8EE9D24B33A9D00EDB1CC /* Assets.xcassets */,
+				12F8EEA224B33A9D00EDB1CC /* Info.plist */,
 			);
 			path = PhoneToApp;
 			sourceTree = "<group>";
@@ -89,7 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				120C804A25A60A3D0093B04E /* CallKit.framework */,
-				CD62D376447EA7DA8E6E2E8B /* Pods_PhoneToApp.framework */,
+				CC3785E9A0E619555D49D7E9 /* Pods_PhoneToApp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -97,8 +97,8 @@
 		E8689775D279B639D78B2EF7 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7D2475DAE0B519816E69CC72 /* Pods-PhoneToApp.debug.xcconfig */,
-				7B001FD93F4173AECFE9B037 /* Pods-PhoneToApp.release.xcconfig */,
+				68B1825D61402C7E46C04222 /* Pods-PhoneToApp.debug.xcconfig */,
+				770D1BEDB575DE510FE846D9 /* Pods-PhoneToApp.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -110,11 +110,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 12F8EEA524B33A9D00EDB1CC /* Build configuration list for PBXNativeTarget "PhoneToApp" */;
 			buildPhases = (
-				8B9BE3D0629B7E7AB8A2DB5B /* [CP] Check Pods Manifest.lock */,
+				AB0BE41429614D02F7D578DE /* [CP] Check Pods Manifest.lock */,
 				12F8EE8D24B33A9C00EDB1CC /* Sources */,
 				12F8EE8E24B33A9C00EDB1CC /* Frameworks */,
 				12F8EE8F24B33A9C00EDB1CC /* Resources */,
-				A72CC205DCDC1476E7ED4673 /* [CP] Embed Pods Frameworks */,
+				55D1A74D7A6D0A28EF25E2AA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -172,7 +172,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		8B9BE3D0629B7E7AB8A2DB5B /* [CP] Check Pods Manifest.lock */ = {
+		55D1A74D7A6D0A28EF25E2AA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PhoneToApp/Pods-PhoneToApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PhoneToApp/Pods-PhoneToApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PhoneToApp/Pods-PhoneToApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AB0BE41429614D02F7D578DE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -192,23 +209,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A72CC205DCDC1476E7ED4673 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PhoneToApp/Pods-PhoneToApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PhoneToApp/Pods-PhoneToApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PhoneToApp/Pods-PhoneToApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -366,12 +366,12 @@
 		};
 		12F8EEA624B33A9D00EDB1CC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7D2475DAE0B519816E69CC72 /* Pods-PhoneToApp.debug.xcconfig */;
+			baseConfigurationReference = 68B1825D61402C7E46C04222 /* Pods-PhoneToApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PhoneToApp/PhoneToApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7F2B5ZSP8Q;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PhoneToApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
@@ -388,12 +388,12 @@
 		};
 		12F8EEA724B33A9D00EDB1CC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7B001FD93F4173AECFE9B037 /* Pods-PhoneToApp.release.xcconfig */;
+			baseConfigurationReference = 770D1BEDB575DE510FE846D9 /* Pods-PhoneToApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PhoneToApp/PhoneToApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7F2B5ZSP8Q;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PhoneToApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.5;

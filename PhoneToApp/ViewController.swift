@@ -7,12 +7,12 @@
 //
 
 import UIKit
-import NexmoClient
+import VonageClientSDKVoice
 
 class ViewController: UIViewController {
     
     private let connectionStatusLabel = UILabel()
-    private var call: NXMCall?
+    private var call: VGVoiceCall?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,13 +23,12 @@ class ViewController: UIViewController {
         connectionStatusLabel.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(connectionStatusLabel)
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[label]-20-|",
-                                                           options: [], metrics: nil, views: ["label" : connectionStatusLabel]))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-80-[label(20)]",
-                                                           options: [], metrics: nil, views: ["label" : connectionStatusLabel]))
         
-        NotificationCenter.default.addObserver(self, selector: #selector(statusReceived(_:)), name: .clientStatus, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(callReceived(_:)), name: .incomingCall, object: nil)
+        view.addConstraints([
+            connectionStatusLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            connectionStatusLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+        
         NotificationCenter.default.addObserver(self, selector: #selector(callHandled), name: .handledCallCallKit, object: nil)
     }
     
@@ -37,27 +36,47 @@ class ViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
+    func displayIncomingCallAlert(invite: VGVoiceInvite) {
+        let from = invite.from.id ?? "Unknown"
+        
+        let alert = UIAlertController(title: "Incoming call from", message: from, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Answer", style: .default, handler: { _ in
+            invite.answer { error, call in
+                if error == nil {
+                    self.call = call
+                    NotificationCenter.default.post(name: .handledCallApp, object: nil)
+                }
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Reject", style: .default, handler: { _ in
+            invite.reject { error in
+                if error == nil {
+                    NotificationCenter.default.post(name: .handledCallApp, object: nil)
+                }
+            }
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+}
+
+extension ViewController: ClientManagerDelegate {
     /*
-     When the Nexmo client status changes,
-     the clientStatus notification will call this function.
+     When the Client status changes,
      This function will update the connectionStatusLabel.
      */
-    @objc func statusReceived(_ notification: NSNotification) {
-        DispatchQueue.main.async { [weak self] in
-            self?.connectionStatusLabel.text = notification.object as? String
-        }
+    func clientStatusUpdated(_ clientManager: ClientManager, status: String) {
+        connectionStatusLabel.text = status
     }
     
     /*
-     When the app receives a call,
-     the incomingCall notification will call this function.
+     When the app receives a call invite,
      It will display an alert to allow for the call to be answered.
      */
-    @objc func callReceived(_ notification: NSNotification) {
+    func incomingCallInvite(_ clientManager: ClientManager, invite: VGVoiceInvite) {
         DispatchQueue.main.async { [weak self] in
-            if let call = notification.object as? NXMCall {
-                self?.displayIncomingCallAlert(call: call)
-            }
+            self?.displayIncomingCallAlert(invite: invite)
         }
     }
     
@@ -72,25 +91,5 @@ class ViewController: UIViewController {
                 self?.dismiss(animated: true, completion: nil)
             }
         }
-    }
-    
-    func displayIncomingCallAlert(call: NXMCall) {
-        var from = "Unknown"
-        if let otherParty = call.allMembers.first {
-            from = otherParty.channel?.from.data ?? "Unknown"
-        }
-        let alert = UIAlertController(title: "Incoming call from", message: from, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Answer", style: .default, handler: { _ in
-            self.call = call
-            NotificationCenter.default.post(name: .handledCallApp, object: nil)
-            call.answer(nil)
-            
-        }))
-        alert.addAction(UIAlertAction(title: "Reject", style: .default, handler: { _ in
-            NotificationCenter.default.post(name: .handledCallApp, object: nil)
-            call.reject(nil)
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
     }
 }

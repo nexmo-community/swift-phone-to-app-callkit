@@ -17,6 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        /*
+         When the device is locked, the AVAudioSession needs to be configured.
+         You can read more about this issue here https://forums.developer.apple.com/thread/64544
+         */
+        try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, mode: AVAudioSession.Mode.voiceChat, options: .allowBluetooth)
         AVAudioSession.sharedInstance().requestRecordPermission { (granted:Bool) in
             print("Allow microphone use. Response: \(granted)")
         }
@@ -62,16 +68,16 @@ extension AppDelegate: PKPushRegistryDelegate {
     
     /*
      This function is called when the app receives a voip push notification.
-     The client checks if it is a valid Nexmo push,
+     The client checks if it is a valid push,
      then reports the call to the system using the providerDelegate.
      */
     func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
-        if clientManager.isNexmoPush(with: payload.dictionaryPayload) {
-            let pushDict = payload.dictionaryPayload as NSDictionary
-            let from = pushDict.value(forKeyPath: Constants.fromKeyPath) as? String
-            
-            clientManager.pushInfo = (payload, completion)
-            providerDelegate.reportCall(callerID: from ?? "Vonage Call")
+        if clientManager.isVonagePush(with: payload.dictionaryPayload) {
+            if let invite = clientManager.processPushPayload(with: payload.dictionaryPayload) {
+                providerDelegate.reportCall(invite: invite, completion: completion)
+            } else {
+                providerDelegate.reportFailedCall(completion: completion)
+            }
         }
     }
 }
