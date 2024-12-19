@@ -1,17 +1,23 @@
 import PushKit
-import NexmoClient
-
-typealias PushInfo = (payload: PKPushPayload, completion: () -> Void)
+import VonageClientSDKVoice
 
 /*
- This class provides an interface to the Nexmo Client that can
- be accessed across the app. It handles logging the client in
- and updated to the client's status. The JWT is hardcoded but in
+ This class provides an interface to the `VGVoiceClient` that can
+ be accessed across the app. It handles logging in the client
+ and updates to the client's status. The JWT is hardcoded but in
  your production app this should be retrieved from your server.
  */
+
+protocol ClientManagerDelegate: AnyObject {
+    func clientStatusUpdated(_ clientManager: ClientManager, status: String)
+    func incomingCallInvite(_ clientManager: ClientManager, invite: VGVoiceInvite)
+}
+
 final class ClientManager: NSObject {
     public var pushToken: Data?
-    public var pushInfo: PushInfo?
+    private var client = VGVoiceClient()
+    
+    private weak var delegate: ClientManagerDelegate?
     
     static let shared = ClientManager()
     
@@ -23,52 +29,69 @@ final class ClientManager: NSObject {
     }
     
     func initializeClient() {
-        NXMClient.shared.setDelegate(self)
+        let config = VGClientConfig(region: .US)
+        client.setConfig(config)
+        client.delegate = self
     }
     
     func login() {
-        guard !NXMClient.shared.isConnected() else { return }
-        NXMClient.shared.login(withAuthToken: ClientManager.jwt)
+        client.createSession(ClientManager.jwt) { error, sessionId in
+            let statusText: String
+            
+            if error == nil {
+                if let token = self.pushToken {
+                    self.registerPushIfNeeded(with: token)
+                }
+                statusText = "Connected"
+            } else {
+                statusText = error!.localizedDescription
+            }
+            self.delegate?.clientStatusUpdated(self, status: statusText)
+        }
     }
     
-    func isNexmoPush(with userInfo: [AnyHashable : Any]) -> Bool {
-        return NXMClient.shared.isNexmoPush(userInfo: userInfo)
+    func isVonagePush(with userInfo: [AnyHashable : Any]) -> Bool {
+        VGVoiceClient.vonagePushType(userInfo) == .unknown ? false : true
     }
     
     func invalidatePushToken() {
-        self.pushToken = nil
-        UserDefaults.standard.removeObject(forKey: Constants.pushToken)
-        NXMClient.shared.disablePushNotifications(nil)
+        if let deviceId = UserDefaults.standard.object(forKey: Constants.deviceId) as? String {
+            client.unregisterDeviceTokens(byDeviceId: deviceId) { error in
+                if error == nil {
+                    self.pushToken = nil
+                    UserDefaults.standard.removeObject(forKey: Constants.pushToken)
+                    UserDefaults.standard.removeObject(forKey: Constants.deviceId)
+                }
+            }
+        }
+        
     }
-    
-    // MARK:-  Private
     
     /*
      This function process the payload from the voip push notification.
      This in turn will call didReceive for the app to handle the incoming call.
      */
-    private func processNexmoPushPayload(with pushInfo: PushInfo) {
-        guard let _ = NXMClient.shared.processNexmoPushPayload(pushInfo.payload.dictionaryPayload) else {
-            print("Nexmo push processing error")
-            return
-        }
-        pushInfo.completion()
-        self.pushInfo = nil
+    func processPushPayload(with payload: [AnyHashable : Any]) -> VGVoicePushInvite? {
+        return client.processCallInvitePushData(payload, token: ClientManager.jwt)
     }
+    
+    // MARK:-  Private
     
     /*
      This function enabled push notifications with the client
      if it has not already been done for the current token.
      */
-    private func enableNXMPushIfNeeded(with token: Data) {
+    private func registerPushIfNeeded(with token: Data) {
         if shouldRegisterToken(with: token) {
-            NXMClient.shared.enablePushNotifications(withPushKitToken: token, userNotificationToken: nil, isSandbox: true) { error in
-                if error != nil {
+            client.registerDevicePushToken(token, userNotificationToken: nil, isSandbox: true) { error, deviceId in
+                if error == nil {
+                    print("push token registered")
+                    UserDefaults.standard.setValue(token, forKey: Constants.pushToken)
+                    UserDefaults.standard.setValue(deviceId, forKey: Constants.deviceId)
+                } else {
                     print("registration error: \(String(describing: error))")
                     return
                 }
-                print("push token registered")
-                UserDefaults.standard.setValue(token, forKey: Constants.pushToken)
             }
         }
     }
@@ -91,65 +114,38 @@ final class ClientManager: NSObject {
     
 }
 
-// MARK:-  NXMClientDelegate
+// MARK:-  VGVoiceClientDelegate
 
-extension ClientManager: NXMClientDelegate {
-    
+extension ClientManager: VGVoiceClientDelegate {
+
     /*
-     When the status of the client changes, this function is called.
-     The status is sent via the clientStatus notification.
-     */
-    func client(_ client: NXMClient, didChange status: NXMConnectionStatus, reason: NXMConnectionStatusReason) {
-        let statusText: String
-        
-        switch status {
-        case .connected:
-            if let token = pushToken {
-                enableNXMPushIfNeeded(with: token)
-            }
-            if let pushInfo = pushInfo {
-                processNexmoPushPayload(with: pushInfo)
-            }
-            statusText = "Connected"
-        case .disconnected:
-            statusText = "Disconnected"
-        case .connecting:
-            statusText = "Connecting"
-        @unknown default:
-            statusText = "Unknown"
-        }
-        
-        NotificationCenter.default.post(name: .clientStatus, object: statusText)
+     If the Client receives a call, this function is called.
+     For a push enabled device, if the app is not killed
+     this function will also be called in addition to the
+     `didReceiveIncomingPushWith` function on the `PKPushRegistryDelegate`
+    */
+    func voiceClient(_ client: VGVoiceClient, didReceive invite: VGVoiceInvite) {
+        delegate?.incomingCallInvite(self, invite: invite)
     }
     
-    /*
-     If the Nexmo client receives and error, this function is called.
-     The status is sent via the clientStatus notification.
-     */
-    func client(_ client: NXMClient, didReceiveError error: Error) {
-        NotificationCenter.default.post(name: .clientStatus, object: error.localizedDescription)
+    func client(_ client: VGBaseClient, didReceiveSessionErrorWithReason reason: String) {
+        delegate?.clientStatusUpdated(self, status: reason)
     }
     
-    /*
-     If the Nexmo client receives a call, this function is called.
-     This is trigged by processing an incoming push notification.
-     The call is sent via the incomingCall notification.
-     */
-    func client(_ client: NXMClient, didReceive call: NXMCall) {
-        NotificationCenter.default.post(name: .incomingCall, object: call)
+    func voiceClient(_ client: VGVoiceClient, didReceiveHangupFor call: VGVoiceCall, withLegId legId: String, andQuality callQuality: VGRTCQuality) {
+        NotificationCenter.default.post(name: .callHungUp, object: nil)
     }
 }
 
 // MARK:-  Constants
 
 struct Constants {
-    static let pushToken = "NXMPushToken"
-    static let fromKeyPath = "nexmo.push_info.from_user.name"
+    static let deviceId = "VGDeviceID"
+    static let pushToken = "VGPushToken"
 }
 
 extension Notification.Name {
-    static let clientStatus = Notification.Name("Status")
-    static let incomingCall = Notification.Name("Call")
+    static let callHungUp = Notification.Name("CallHungUp")
     static let handledCallCallKit = Notification.Name("CallHandledCallKit")
     static let handledCallApp = Notification.Name("CallHandledApp")
 }

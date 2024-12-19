@@ -43,6 +43,7 @@
 	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>processing</string>
 		<string>voip</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
